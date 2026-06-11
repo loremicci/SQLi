@@ -20,6 +20,12 @@ $sql .= " ORDER BY date DESC";
 try {
     $stmt = $db_connection->query($sql);
     $voti = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Per permettere l'esecuzione completa delle query multiple (Piggybacked Queries) in PDO,
+    // è necessario scorrere tutti i set di risultati, altrimenti MySQL interrompe l'esecuzione.
+    while ($stmt->nextRowset()) {
+        // Flush dei risultati
+    }
 } catch (PDOException $e) {
     // Stampare l'errore a schermo è utile per le Error-Based SQL Injection
     $db_error = "Errore SQL: " . $e->getMessage();

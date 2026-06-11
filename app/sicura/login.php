@@ -5,15 +5,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+    // DIFESA (Prepared Statements): 
+    // Invece di concatenare le stringhe utente direttamente nella query (come nell'app vulnerabile: $sql = "... WHERE username = '$username'"),
+    // utilizziamo dei "placeholder" (es. :username). Questo impedisce l'attacco di Tautologia (es. ' OR 1=1 --), 
+    // perché il database tratterà l'input rigorosamente come stringa di testo e non come codice eseguibile SQL.
+    $sql = "SELECT * FROM users WHERE username = :username AND password = :password";
     
     try {
-        $stmt = $db_connection->query($sql);
+        $stmt = $db_connection->prepare($sql);
+        // "Leghiamo" le variabili ai placeholder in modo sicuro
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':password', $password);
+        $stmt->execute();
+        
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        while ($stmt->nextRowset()) {
-            // Flush dei risultati per permettere l'esecuzione di piggybacked queries
-        }
 
         if ($user) {
             $_SESSION['user_id'] = $user['id'];
@@ -44,9 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <style>
 
     :root{
-        --main-red:#d32f2f;
-        --main-red-dark:#b71c1c;
-        --main-red-light:#ffcdd2;
+        --main-blue:#1976d2;
+        --main-blue-dark:#115293;
+        --main-blue-light:#bbdefb;
     }
 
     body{
@@ -69,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     .top-bar{
-        background:var(--main-red);
+        background:var(--main-blue);
         height:6px;
     }
 
@@ -78,18 +83,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         height:85px;
         margin:auto;
         border-radius:50%;
-        background:var(--main-red);
+        background:var(--main-blue);
         color:white;
         display:flex;
         align-items:center;
         justify-content:center;
         font-size:32px;
         font-weight:bold;
-        box-shadow:0 6px 15px rgba(211,47,47,.25);
+        box-shadow:0 6px 15px rgba(25, 118, 210, .25);
     }
 
     .portal-title{
-        color:var(--main-red);
+        color:var(--main-blue);
         font-weight:700;
     }
 
@@ -99,12 +104,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     .form-control:focus{
-        border-color:var(--main-red);
-        box-shadow:0 0 0 .2rem rgba(211,47,47,.15);
+        border-color:var(--main-blue);
+        box-shadow:0 0 0 .2rem rgba(25, 118, 210, .15);
     }
 
     .btn-login{
-        background:var(--main-red);
+        background:var(--main-blue);
         border:none;
         height:46px;
         border-radius:8px;
@@ -112,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     .btn-login:hover{
-        background:var(--main-red-dark);
+        background:var(--main-blue-dark);
     }
 
     .school-info{

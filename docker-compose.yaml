@@ -9,14 +9,24 @@ services:
       MYSQL_USER: lab_user
       MYSQL_PASSWORD: lab_password
     volumes:
-      - ./db/01_init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/01_init.sql:/docker-entrypoint-initdb.d/01_init.sql
+      - ./db/02_secure_user.sql:/docker-entrypoint-initdb.d/02_secure_user.sql
     networks:
       - lab-network
 
-  app:
+  app-vulnerabile:
     build: ./app/vulnerabile
     ports:
       - "8080:80"
+    depends_on:
+      - db
+    networks:
+      - lab-network
+
+  app-sicura:
+    build: ./app/sicura
+    ports:
+      - "8081:80"
     depends_on:
       - db
     networks:
