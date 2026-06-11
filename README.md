@@ -1,6 +1,5 @@
-# 🛡️ Progetto SQL Injection - Sicurezza Informatica
-
 <div align="center">
+<h1>🔒🛡️ Progetto SQL Injection - Sicurezza Informatica</h1>
   <i>Progetto per il corso di Sicurezza, Dipartimento di Informatica <br> <b>Università degli Studi di Roma "La Sapienza"</b></i>
 </div>
 <br>
