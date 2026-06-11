@@ -3,6 +3,13 @@
 <div align="center">
   <i>Progetto per il corso di Sicurezza, Dipartimento di Informatica <br> <b>Università degli Studi di Roma "La Sapienza"</b></i>
 </div>
+<br>
+<div align="center">
+  <img src="https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
+  <img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white" alt="MariaDB">
+  <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+  <img src="https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white" alt="Bootstrap">
+</div>
 
 ---
 
