@@ -11,11 +11,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $db_connection->query($sql);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && $user['username'] === $username && $user['password'] === $password) {
+        if ($user) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['logged_in'] = true;
             header("Location: index.php");
             exit();
         } else {
-            echo "<script>alert('Credenziali errate. Riprova.');</script>";
+            $_SESSION['login_error'] = true;
+            header("Location: login.php");
+            exit();
         }
     } catch (PDOException $e) {
         die("Errore nella query: " . $e->getMessage());
@@ -160,7 +164,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="password" name="password" id="password" class="form-control"
                            placeholder="Inserisci la password" required>
                 </div>
-
+                <?php if (isset($_SESSION['login_error']) && $_SESSION['login_error'] === true): ?>
+                    <p class="text-danger my-3">
+                        Username o password errati
+                    </p>
+                    <?php unset($_SESSION['login_error']); ?>
+                <?php endif; ?>
                 <button type="submit" class="btn btn-login w-100 text-white">
                     ACCEDI
                 </button>
