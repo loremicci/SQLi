@@ -4,6 +4,10 @@
 </div>
 <br>
 <div align="center">
+  <img src="https://sb.nordcdn.com/transform/2924aecf-2757-4cc5-a0a2-c258909ff706/sql-injection-800x450?format=webp&quality=80&io=transform%3Afill%2Cwidth%3A1920" alt="SQL Injection" width="500">
+</div>
+<br>
+<div align="center">
   <img src="https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
   <img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white" alt="MariaDB">
   <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
