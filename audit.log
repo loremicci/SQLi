@@ -38,3 +38,10 @@
 [2026-06-17 16:37:47] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: ' UNION SELECT username, password, email FROM users -- 
 [2026-06-17 16:37:58] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; UPDATE grades SET grade = 10; -- 
 [2026-06-17 16:38:07] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; DELETE FROM grades; -- 
+[2026-06-17 16:47:05] ⚠️  TENTATIVO SQLi RILEVATO | IP: 172.18.0.1 | Username: ' OR 1=1 --  | Password: hacked
+[2026-06-17 16:47:18] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: ' UNION SELECT username, password, email FROM users -- 
+[2026-06-17 16:47:28] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; UPDATE grades SET grade = 10; -- 
+[2026-06-17 16:47:38] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; DELETE FROM grades; -- 
+[2026-06-17 16:47:57] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: ' UNION SELECT username, password, email FROM users -- 
+[2026-06-17 16:48:08] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; UPDATE grades SET grade = 10; -- 
+[2026-06-17 16:48:17] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; DELETE FROM grades; -- 
