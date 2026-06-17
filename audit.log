@@ -1,0 +1,33 @@
+# Log Tentativi di attacco all'Applicazione Sicura
+[2026-06-17 15:21:22] ⚠️  TENTATIVO SQLi RILEVATO | IP: 172.18.0.1 | Username: ' OR 1=1 --  | Password: hacked
+[2026-06-17 15:21:59] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: ' UNION SELECT username, password, email FROM users -- 
+[2026-06-17 15:22:14] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; UPDATE grades SET grade = 10; -- 
+[2026-06-17 15:22:33] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; DELETE FROM grades; -- 
+[2026-06-17 15:23:09] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: ' UNION SELECT username, password, email FROM users -- 
+[2026-06-17 15:23:34] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: ' UNION SELECT username, password, email FROM users -- 
+[2026-06-17 15:23:48] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: ' UNION SELECT username, password, email FROM users -- 
+[2026-06-17 15:24:04] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; UPDATE grades SET grade = 10; -- 
+[2026-06-17 15:24:22] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; DELETE FROM grades; -- 
+[2026-06-17 15:26:32] ⚠️  TENTATIVO SQLi RILEVATO | IP: 172.18.0.1 | Username: ' OR 1=1 --  | Password: hacked
+[2026-06-17 15:26:44] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: ' UNION SELECT username, password, email FROM users -- 
+[2026-06-17 15:26:57] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; UPDATE grades SET grade = 10; -- 
+[2026-06-17 15:27:24] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; DELETE FROM grades; -- 
+[2026-06-17 15:27:46] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: ' UNION SELECT username, password, email FROM users -- 
+[2026-06-17 15:28:05] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; UPDATE grades SET grade = 10; -- 
+[2026-06-17 15:28:15] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; DELETE FROM grades; -- 
+[2026-06-17 15:34:32] ⚠️  TENTATIVO SQLi RILEVATO | IP: 172.18.0.1 | Username: ' OR 1=1 --  | Password: hacked
+[2026-06-17 15:35:18] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: ' UNION SELECT username, password, email FROM users -- 
+[2026-06-17 15:35:32] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; UPDATE grades SET grade = 10; -- 
+[2026-06-17 15:35:59] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; DELETE FROM grades; -- 
+[2026-06-17 15:36:15] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: ' UNION SELECT username, password, email FROM users -- 
+[2026-06-17 15:36:49] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: ' UNION SELECT username, password, email FROM users -- 
+[2026-06-17 15:37:11] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: ' UNION SELECT username, password, email FROM users -- 
+[2026-06-17 15:37:33] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; UPDATE grades SET grade = 10; -- 
+[2026-06-17 15:37:47] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; DELETE FROM grades; -- 
+[2026-06-17 15:49:17] ⚠️  TENTATIVO SQLi RILEVATO | IP: 172.18.0.1 | Username: ' OR 1=1 --  | Password: hacked
+[2026-06-17 15:49:30] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: ' UNION SELECT username, password, email FROM users -- 
+[2026-06-17 15:49:41] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; UPDATE grades SET grade = 10; -- 
+[2026-06-17 15:49:51] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; DELETE FROM grades; -- 
+[2026-06-17 15:50:10] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: ' UNION SELECT username, password, email FROM users -- 
+[2026-06-17 15:50:20] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; UPDATE grades SET grade = 10; -- 
+[2026-06-17 15:50:29] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; DELETE FROM grades; -- 

@@ -3,17 +3,24 @@
 Tutti i servizi sono stati configurati e avviati correttamente tramite Docker.
 
 ## Servizi Avviati
-*   **Database (MariaDB 10.5)**: Porta `3306`
-*   **Web App Vulnerabile (Tema Rosso)**: [http://localhost:8080](http://localhost:8080)
-*   **Web App Sicura (Tema Blu)**: [http://localhost:8081](http://localhost:8081)
+
+* **Database (MariaDB 10.5)**: Porta `3306`
+* **Web App Vulnerabile (Tema Rosso)**: [http://localhost:8080](http://localhost:8080)
+* **Web App Sicura (Tema Blu)**: [http://localhost:8081](http://localhost:8081)
 
 ---
 
 ## 🐍 Automazione Visiva della Demo (Consigliato)
 
-Abbiamo preparato uno script Python che utilizza **Selenium** per automatizzare completamente la dimostrazione degli attacchi e delle difese aprendo una finestra del browser. 
+Abbiamo preparato uno script Python che utilizza **Selenium** per automatizzare completamente la dimostrazione degli attacchi e delle difese aprendo una finestra del browser.
 
-Puoi eseguirlo con:
+**Prerequisiti:**
+
+1. Assicurati che i container siano attivi (`docker compose up --build -d`).
+2. Installa la dipendenza necessaria con `pip install selenium`.
+
+Puoi eseguire la demo con:
+
 ```bash
 python exploits/demo_browser.py
 ```
@@ -21,16 +28,16 @@ python exploits/demo_browser.py
 Lo script offre un menu interattivo a 15 Fasi. Eseguendo la **Fase 15 (Modalità Automatica)** o esplorando le fasi manualmente (premendo INVIO ad ogni step), verranno dimostrati in tempo reale:
 
 1. **Attacchi sull'App Vulnerabile**:
-   - Bypass dell'Autenticazione senza password (Tautologia Universale).
-   - Information Gathering (scoperta delle tabelle e colonne in cieco con `UNION`).
-   - Esfiltrazione di massa delle password.
-   - Modifica indiscriminata di tutti i voti nel DB (Piggybacked UPDATE).
-   - Cancellazione dell'intero database dei voti (Piggybacked DELETE).
+   * Bypass dell'Autenticazione senza password (Tautologia Universale).
+   * Information Gathering (scoperta delle tabelle e colonne in cieco con `UNION`).
+   * Esfiltrazione di massa delle password.
+   * Modifica indiscriminata di tutti i voti nel DB (Piggybacked UPDATE).
+   * Cancellazione dell'intero database dei voti (Piggybacked DELETE).
 
 2. **Verifica delle Difese sull'App Sicura (Defense in Depth)**:
-   - Tentativo di Bypass sul login bloccato con successo.
-   - Accesso legittimo come **Alunno Verdi** (utente standard). I tentativi successivi di esfiltrazione e distruzione tramite la barra di ricerca vengono neutralizzati.
-   - Accesso legittimo come **Admin Supremo** (utente privilegiato). Viene dimostrato che anche possedendo alti privilegi nell'app, se i *Prepared Statements* sono implementati correttamente, l'SQL Injection è impossibile.
+   * Tentativo di Bypass sul login bloccato con successo.
+   * Accesso legittimo come **Alunno Verdi** (utente standard). I tentativi successivi di esfiltrazione e distruzione tramite la barra di ricerca vengono neutralizzati.
+   * Accesso legittimo come **Admin Supremo** (utente privilegiato). Viene dimostrato che anche possedendo alti privilegi nell'app, se i *Prepared Statements* sono implementati correttamente, l'SQL Injection è impossibile.
 
 ---
 
@@ -48,3 +55,4 @@ Grazie alla configurazione Docker, il file di log viene salvato dinamicamente **
 1. **Livello Applicativo (Prepared Statements - PDO):** Le stringhe iniettate dall'attaccante diventano semplici variabili letterali e non vengono mai eseguite dal motore SQL.
 2. **Livello Database (Principio Minimo Privilegio):** L'utente del DB dell'app sicura ha permessi limitati (`SELECT`, `INSERT`, `UPDATE`). I comandi distruttivi come `DELETE` o `DROP` fallirebbero a livello di driver anche in caso di zero-day nell'applicazione.
 3. **Livello Forense/Monitoraggio (Audit.log):** Il sistema traccia attivamente e responsabilizza ogni tentativo di attacco rilevato.
+

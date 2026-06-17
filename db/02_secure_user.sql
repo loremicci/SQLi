@@ -51,3 +51,4 @@ CREATE USER IF NOT EXISTS 'lab_user_secure'@'%' IDENTIFIED BY 'lab_password_secu
 GRANT SELECT, INSERT, UPDATE ON sql_injection_secure_db.* TO 'lab_user_secure'@'%';
 
 FLUSH PRIVILEGES;
+

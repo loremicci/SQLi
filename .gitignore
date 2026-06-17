@@ -10,11 +10,11 @@ mysql_data/
 db_data/
 
 # --- PHP & Sicurezza ---
-# Ignora file di log e file contenenti password/configurazioni locali
-*.log
+# Ignora file contenenti password/configurazioni locali
 .env
 
 # --- Python ---
 venv/
 .venv/
 __pycache__/
+

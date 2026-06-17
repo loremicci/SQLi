@@ -43,3 +43,4 @@ INSERT INTO grades (student_id, grade, subject, date) VALUES
 (6, 2, 'Storia', '2026-07-15'),
 (6, 9, 'Matematica', '2026-08-20'),
 (6, 8, 'Inglese', '2026-09-01');
+
