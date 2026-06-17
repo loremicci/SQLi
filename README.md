@@ -13,6 +13,7 @@
   <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
   <img src="https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white" alt="Bootstrap">
   <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python">
+  <img src="https://img.shields.io/badge/-selenium-%43B02A?style=for-the-badge&logo=selenium&logoColor=white" alt="Selenium">
 </div>
 
 ---
@@ -56,14 +57,19 @@ All'interno del file [`exploits/payloads.md`](./exploits/payloads.md) troverai u
 - 💥 **Error-Based SQL Injection**: Utilizzo di `EXTRACTVALUE()` per forzare il database a rivelare informazioni sensibili direttamente nei messaggi di errore.
 
 ### 🤖 Tool di Automazione (Python)
-È inoltre disponibile uno script Python ([`exploits/automate_sqli.py`](./exploits/automate_sqli.py)) che automatizza l'intera kill-chain di attacco, dimostrando come un attaccante reale possa esfiltrare un intero database in pochi secondi.
+Sono disponibili due script Python per automatizzare gli attacchi:
 
-Per eseguirlo:
+| Script | Descrizione |
+|--------|-------------|
+| [`automate_sqli.py`](./exploits/automate_sqli.py) | Kill-chain via terminale con menu interattivo e output tabellare |
+| [`demo_browser.py`](./exploits/demo_browser.py) | **Demo visuale**: apre un browser reale e mostra ogni attacco passo-passo |
+
+Per eseguire la demo visuale nel browser (consigliata per la presentazione):
 ```bash
-pip install requests
-python exploits/automate_sqli.py
+pip install selenium requests
+python exploits/demo_browser.py
 ```
-Lo script offre un menu interattivo per eseguire ogni fase singolarmente o lanciare l'intera catena in sequenza.
+Lo script aprirà Chrome, eseguirà ogni fase dell'attacco con un effetto "typing" in tempo reale, e infine verificherà che l'app sicura blocchi correttamente i payload.
 
 ---
 
@@ -111,7 +117,8 @@ Il WAF si posiziona tra il client e il web server e ispeziona ogni richiesta HTT
 │   └── 02_secure_user.sql   # 🔒 Inizializzazione DB app sicura (privilegi minimi)
 ├── exploits/
 │   ├── payloads.md          # ⚔️ Payload e istruzioni per gli attacchi manuali
-│   └── automate_sqli.py     # 🤖 Script Python per l'automazione degli attacchi
+│   ├── automate_sqli.py     # 🤖 Script Python per l'automazione via terminale
+│   └── demo_browser.py      # 🌐 Demo visuale con Selenium (apre il browser)
 ├── docker-compose.yaml      # 🐳 Configurazione dei servizi Docker
 └── README.md                # 📖 Questo file
 ```
