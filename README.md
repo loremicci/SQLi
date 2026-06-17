@@ -12,6 +12,7 @@
   <img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white" alt="MariaDB">
   <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
   <img src="https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white" alt="Bootstrap">
+  <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python">
 </div>
 
 ---
@@ -51,31 +52,68 @@ All'interno del file [`exploits/payloads.md`](./exploits/payloads.md) troverai u
 - 🩸 **Esfiltrazione Dati**: Estrazione mirata di informazioni sensibili (email, password) di tutti gli utenti, una volta scoperta la struttura (Violazione della *Confidentiality*).
 - ✏️ **Piggybacked Queries (Modifica di Massa)**: Alterazione non autorizzata e massiva di tutti i voti all'interno del database senza conoscere gli ID specifici degli studenti (Violazione dell'*Integrity*).
 - 🗑️ **Piggybacked Queries (Cancellazione di Massa)**: Rimozione malevola dell'intero contenuto della tabella dei voti per causare un disservizio permanente (Violazione dell'*Availability*).
+- ⏱️ **Blind SQL Injection (Time-Based)**: Dimostrazione di come un attaccante possa confermare la vulnerabilità e *estrarre dati carattere per carattere* usando `SLEEP()`, anche quando l'applicazione non mostra errori né output.
+- 💥 **Error-Based SQL Injection**: Utilizzo di `EXTRACTVALUE()` per forzare il database a rivelare informazioni sensibili direttamente nei messaggi di errore.
+
+### 🤖 Tool di Automazione (Python)
+È inoltre disponibile uno script Python ([`exploits/automate_sqli.py`](./exploits/automate_sqli.py)) che automatizza l'intera kill-chain di attacco, dimostrando come un attaccante reale possa esfiltrare un intero database in pochi secondi.
+
+Per eseguirlo:
+```bash
+pip install requests
+python exploits/automate_sqli.py
+```
+Lo script offre un menu interattivo per eseguire ogni fase singolarmente o lanciare l'intera catena in sequenza.
 
 ---
 
 ## 🛡️ Difese Implementate
 
-Il progetto prevede contromisure applicate su due diversi livelli di astrazione:
+Il progetto prevede contromisure applicate su **tre diversi livelli** di profondità (Defense in Depth):
 
-### 1. Livello Web Application (PHP/PDO)
+### 1. 🔒 Livello Web Application (Prepared Statements)
 L'app sicura adotta **Prepared Statements** con l'ausilio della libreria PDO. Invece di concatenare le stringhe input direttamente nella query, vengono utilizzati dei *placeholder*. In questo modo il driver del database sanitizza le stringhe impedendo che il testo inserito venga mai processato come codice SQL eseguibile.
 
-### 2. Livello Database (Principio del Minimo Privilegio)
+### 2. 🗄️ Livello Database (Principio del Minimo Privilegio)
 A livello architetturale, l'app sicura è disaccoppiata da quella vulnerabile. Utilizza un database parallelo (`sql_injection_secure_db`) interrogato da uno specifico utente configurato tramite lo script [`02_secure_user.sql`](./db/02_secure_user.sql). 
 A tale utente (`lab_user_secure`) vengono concessi esclusivamente i permessi di `SELECT`, `INSERT` e `UPDATE`, negando esplicitamente i permessi distruttivi come `DROP` e `DELETE`. Questo assicura che, persino in presenza di vulnerabilità 0-day lato codice, gli attacchi mirati alla cancellazione dei dati falliranno a livello del motore DB.
+
+### 3. 📋 Livello Monitoraggio (Audit Logging)
+L'app sicura integra un sistema di **Intrusion Detection** che analizza ogni input ricevuto (sia nel login che nella barra di ricerca) confrontandolo con una lista di pattern sospetti (regex per `UNION SELECT`, `OR 1=1`, `SLEEP()`, `EXTRACTVALUE`, ecc.).
+Se un pattern viene rilevato, il tentativo viene registrato nel file `audit.log` con timestamp, IP sorgente e payload utilizzato. Questo permette al difensore di:
+- Monitorare i tentativi di attacco in tempo reale
+- Costruire un archivio storico degli incidenti per analisi forensi
+- Attivare eventuali contromisure automatiche (es. ban dell'IP)
+
+Per consultare il log dall'interno del container:
+```bash
+docker exec progetto_sqlinjection-app-sicura-1 cat /var/www/html/audit.log
+```
+
+### 4. 🌐 Livello Rete (WAF - Web Application Firewall) — Approfondimento Teorico
+In un ambiente di produzione reale, un ulteriore livello di difesa è rappresentato dal **WAF (Web Application Firewall)**, come ad esempio *ModSecurity* con il set di regole OWASP CRS (Core Rule Set).
+Il WAF si posiziona tra il client e il web server e ispeziona ogni richiesta HTTP **prima** che raggiunga l'applicazione PHP:
+- Blocca richieste contenenti pattern noti di SQL Injection (`UNION`, `SELECT`, `DROP`, ecc.)
+- Protegge anche da attacchi XSS, path traversal e altri vettori OWASP Top 10
+- Può essere deployato come container Docker aggiuntivo (reverse proxy Apache/Nginx + ModSecurity)
+
+> **Nota:** Il WAF non è stato implementato in questo laboratorio per mantenere l'infrastruttura leggera e focalizzata sull'analisi del codice, ma rappresenterebbe il quarto livello di difesa in un'architettura di sicurezza completa.
 
 ---
 
 ## 📁 Struttura della Repository
 ```text
 ├── app/
-│   ├── sicura/          # 🔵 Codice sorgente dell'app protetta
-│   └── vulnerabile/     # 🔴 Codice sorgente dell'app vulnerabile
-├── db/                  # 🗄️ Script SQL per l'inizializzazione del database
-├── exploits/            # ⚔️ Payload e istruzioni per condurre gli attacchi
-├── docker-compose.yaml  # 🐳 Configurazione dei servizi Docker
-└── README.md            # 📖 Questo file
+│   ├── sicura/              # 🔵 Codice sorgente dell'app protetta
+│   └── vulnerabile/         # 🔴 Codice sorgente dell'app vulnerabile
+├── db/
+│   ├── 01_init.sql          # 🗄️ Inizializzazione DB app vulnerabile
+│   └── 02_secure_user.sql   # 🔒 Inizializzazione DB app sicura (privilegi minimi)
+├── exploits/
+│   ├── payloads.md          # ⚔️ Payload e istruzioni per gli attacchi manuali
+│   └── automate_sqli.py     # 🤖 Script Python per l'automazione degli attacchi
+├── docker-compose.yaml      # 🐳 Configurazione dei servizi Docker
+└── README.md                # 📖 Questo file
 ```
 
 ---

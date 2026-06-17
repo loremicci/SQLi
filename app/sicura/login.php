@@ -5,6 +5,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
+    // DIFESA (Audit/Logging): 
+    // Un sistema di logging rileva pattern sospetti nell'input (apici, UNION, OR 1=1, ecc.)
+    // e li registra su un file di log. Questo permette al difensore di monitorare
+    // i tentativi di attacco in tempo reale e intervenire prontamente.
+    $suspicious_patterns = [
+        "/' OR /i",            // Tautologia
+        "/UNION\s+SELECT/i",   // Union-based injection
+        "/;\s*(UPDATE|DELETE|DROP|INSERT)/i",  // Piggybacked queries
+        "/SLEEP\s*\(/i",       // Time-based blind injection
+        "/EXTRACTVALUE/i",     // Error-based injection
+        "/information_schema/i", // Information gathering
+        "/--\s*$/",            // End-of-line comment
+    ];
+
+    $is_suspicious = false;
+    foreach ($suspicious_patterns as $pattern) {
+        if (preg_match($pattern, $username) || preg_match($pattern, $password)) {
+            $is_suspicious = true;
+            break;
+        }
+    }
+
+    if ($is_suspicious) {
+        $log_entry = date('[Y-m-d H:i:s]') . " ⚠️  TENTATIVO SQLi RILEVATO" .
+                     " | IP: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown') .
+                     " | Username: " . substr($username, 0, 100) .
+                     " | Password: " . substr($password, 0, 100) . "\n";
+        file_put_contents('/var/www/html/audit.log', $log_entry, FILE_APPEND);
+    }
+
     // DIFESA (Prepared Statements): 
     // Invece di concatenare le stringhe utente direttamente nella query (come nell'app vulnerabile: $sql = "... WHERE username = '$username'"),
     // utilizziamo dei "placeholder" (es. :username). Questo impedisce l'attacco di Tautologia (es. ' OR 1=1 --), 

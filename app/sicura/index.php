@@ -9,6 +9,27 @@ $sql = "SELECT subject, grade, date FROM grades WHERE student_id = :student_id";
 
 if (isset($_GET['search']) && trim($_GET['search']) !== '') {
     $search_term = $_GET['search'];
+
+    // DIFESA (Audit/Logging):
+    // Rileva pattern sospetti nella barra di ricerca e li registra nel log.
+    $suspicious_patterns = [
+        "/UNION\s+SELECT/i",
+        "/;\s*(UPDATE|DELETE|DROP|INSERT)/i",
+        "/SLEEP\s*\(/i",
+        "/EXTRACTVALUE/i",
+        "/information_schema/i",
+        "/ORDER\s+BY\s+\d+/i",
+        "/--\s*$/",
+    ];
+    foreach ($suspicious_patterns as $pattern) {
+        if (preg_match($pattern, $search_term)) {
+            $log_entry = date('[Y-m-d H:i:s]') . " ⚠️  TENTATIVO SQLi RILEVATO (ricerca)" .
+                         " | IP: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown') .
+                         " | Search: " . substr($search_term, 0, 200) . "\n";
+            file_put_contents('/var/www/html/audit.log', $log_entry, FILE_APPEND);
+            break;
+        }
+    }
     
     // DIFESA (Prepared Statements):
     // Nell'app vulnerabile usavamo $sql .= " AND subject LIKE '%$search_term%'"; 
