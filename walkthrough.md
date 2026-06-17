@@ -3,70 +3,48 @@
 Tutti i servizi sono stati configurati e avviati correttamente tramite Docker.
 
 ## Servizi Avviati
-*   **Database (MariaDB 10.5)**: Port `3306`
+*   **Database (MariaDB 10.5)**: Porta `3306`
 *   **Web App Vulnerabile (Tema Rosso)**: [http://localhost:8080](http://localhost:8080)
 *   **Web App Sicura (Tema Blu)**: [http://localhost:8081](http://localhost:8081)
 
 ---
 
-## Come Eseguire i Test e Dimostrare i Principi CIA (Black Box)
+## 🐍 Automazione Visiva della Demo (Consigliato)
 
-Puoi trovare le istruzioni dettagliate e i payload pronti all'uso nel file [payloads.md](file:///c:/Users/lorem/Desktop/UNI/Sicurezza/Progetto_SQLInjection/exploits/payloads.md). Di seguito un riassunto dei test principali da mostrare, simulando un attaccante che **non conosce nulla del sistema**.
+Abbiamo preparato uno script Python che utilizza **Selenium** per automatizzare completamente la dimostrazione degli attacchi e delle difese aprendo una finestra del browser. 
 
-### 1. Bypass dell'Autenticazione (Tautologia Universale)
-1. Vai su [http://localhost:8080/login.php](http://localhost:8080/login.php).
-2. Nel campo **Username** inserisci:
-   ```text
-   ' OR 1=1 -- 
-   ```
-3. Inserisci qualsiasi cosa nel campo **Password** e premi **ACCEDI**.
-4. Senza sapere alcun nome utente, la query estrarrà tutti gli utenti e ti loggherà come il primo della lista (spesso l'amministratore, in questo caso `admin_supremo`). (Violazione **Confidenzialità**).
+Puoi eseguirlo con:
+```bash
+python exploits/demo_browser.py
+```
 
-### 2. Information Gathering (Fase di Studio)
-1. Una volta dentro, l'attaccante usa la barra di ricerca per capire come è fatto il database.
-2. Trova il numero di colonne della pagina:
-   `' ORDER BY 3 -- ` (Funziona)
-   `' ORDER BY 4 -- ` (Errore -> Le colonne sono 3).
-3. Scopre i nomi delle tabelle:
-   ```text
-   ' UNION SELECT table_name, 'dummy', 'dummy' FROM information_schema.tables WHERE table_schema = database() -- 
-   ```
-   *(Risultato visibile in basso: `users`, `grades`)*
-4. Scopre le colonne della tabella `users`:
-   ```text
-   ' UNION SELECT column_name, 'dummy', 'dummy' FROM information_schema.columns WHERE table_name = 'users' -- 
-   ```
+Lo script offre un menu interattivo a 15 Fasi. Eseguendo la **Fase 15 (Modalità Automatica)** o esplorando le fasi manualmente (premendo INVIO ad ogni step), verranno dimostrati in tempo reale:
 
-### 3. Esfiltrazione Dati (Union-Based)
-1. Ora l'attaccante ha studiato il DB e lancia l'attacco mirato. Nella barra di ricerca, inserisce:
-   ```text
-   ' UNION SELECT username, password, email FROM users -- 
-   ```
-2. L'applicazione stamperà a video i dati personali e sensibili di tutti gli utenti, professori e admin compresi. (Violazione **Confidenzialità**).
+1. **Attacchi sull'App Vulnerabile**:
+   - Bypass dell'Autenticazione senza password (Tautologia Universale).
+   - Information Gathering (scoperta delle tabelle e colonne in cieco con `UNION`).
+   - Esfiltrazione di massa delle password.
+   - Modifica indiscriminata di tutti i voti nel DB (Piggybacked UPDATE).
+   - Cancellazione dell'intero database dei voti (Piggybacked DELETE).
 
-### 4. Modifica Dati di Massa (Piggybacked Queries)
-1. L'attaccante vuole manipolare il sistema. Sempre nella barra di ricerca, inserisce un update globale:
-   ```text
-   '; UPDATE grades SET grade = 10; -- 
-   ```
-2. Ricarica la pagina base senza ricerca: noterai che *tutti* i voti sono stati portati a `10`! (Violazione dell'**Integrità**).
-
-### 5. Cancellazione Dati di Massa (Piggybacked Queries / DoS)
-1. L'attaccante decide di distruggere i dati. Inserisce:
-   ```text
-   '; DELETE FROM grades; -- 
-   ```
-2. Ricarica la pagina: tutti i voti del sistema sono spariti per sempre (Violazione della **Disponibilità**).
+2. **Verifica delle Difese sull'App Sicura (Defense in Depth)**:
+   - Tentativo di Bypass sul login bloccato con successo.
+   - Accesso legittimo come **Alunno Verdi** (utente standard). I tentativi successivi di esfiltrazione e distruzione tramite la barra di ricerca vengono neutralizzati.
+   - Accesso legittimo come **Admin Supremo** (utente privilegiato). Viene dimostrato che anche possedendo alti privilegi nell'app, se i *Prepared Statements* sono implementati correttamente, l'SQL Injection è impossibile.
 
 ---
 
-## Dimostrazione dell'Efficacia delle Difese
+## 📋 Sistema di Intrusion Detection (Audit Logging)
 
-### Difesa Web App (Prepared Statements)
-Se ripeti gli stessi attacchi su [http://localhost:8081](http://localhost:8081) (App Sicura):
-*   Il login fallirà perché gli apici (e l'istruzione `OR 1=1`) vengono gestiti come semplice testo e non elaborati come logica.
-*   La barra di ricerca cercherà letteralmente quella stringa strana e non eseguirà né le `UNION` né gli `UPDATE` o `DELETE`.
+L'applicazione sicura include un meccanismo di monitoraggio attivo. Qualsiasi input che contiene pattern pericolosi (`UNION`, `UPDATE`, `OR 1=1`, ecc.) viene intercettato e registrato nel file `audit.log`.
 
-### Difesa Database (Principio dei Minimi Privilegi)
-L'app sicura gira su un DB separato e connessa con l'utente `lab_user_secure`.
-Anche se l'attaccante scoprisse un modo per aggirare il codice PHP ed eseguire un comando di distruzione come `DROP TABLE grades` o `DELETE FROM grades`, quest'ultimo verrebbe **bloccato dal motore del database stesso**, poiché a quell'utente sono stati intenzionalmente revocati i permessi distruttivi.
+**Come leggerlo:**
+Grazie alla configurazione Docker, il file di log viene salvato dinamicamente **direttamente nella cartella del tuo progetto**. Non c'è bisogno di entrare nel container! Ti basta aprire il file `audit.log` presente qui fuori con il tuo editor di codice per vedere l'elenco degli IP e dei payload che hanno tentato di attaccare l'app sicura in tempo reale.
+
+---
+
+## 🛡️ Riassunto Difese Implementate
+
+1. **Livello Applicativo (Prepared Statements - PDO):** Le stringhe iniettate dall'attaccante diventano semplici variabili letterali e non vengono mai eseguite dal motore SQL.
+2. **Livello Database (Principio Minimo Privilegio):** L'utente del DB dell'app sicura ha permessi limitati (`SELECT`, `INSERT`, `UPDATE`). I comandi distruttivi come `DELETE` o `DROP` fallirebbero a livello di driver anche in caso di zero-day nell'applicazione.
+3. **Livello Forense/Monitoraggio (Audit.log):** Il sistema traccia attivamente e responsabilizza ogni tentativo di attacco rilevato.
