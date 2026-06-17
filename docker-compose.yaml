@@ -11,6 +11,11 @@ services:
     volumes:
       - ./db/01_init.sql:/docker-entrypoint-initdb.d/01_init.sql
       - ./db/02_secure_user.sql:/docker-entrypoint-initdb.d/02_secure_user.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
     networks:
       - lab-network
 
@@ -19,7 +24,8 @@ services:
     ports:
       - "8080:80"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - lab-network
 
@@ -28,7 +34,10 @@ services:
     ports:
       - "8081:80"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    volumes:
+      - ./audit.log:/var/www/html/audit.log
     networks:
       - lab-network
 

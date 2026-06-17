@@ -13,3 +13,8 @@ db_data/
 # Ignora file di log e file contenenti password/configurazioni locali
 *.log
 .env
+
+# --- Python ---
+venv/
+.venv/
+__pycache__/

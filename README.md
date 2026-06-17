@@ -53,22 +53,20 @@ All'interno del file [`exploits/payloads.md`](./exploits/payloads.md) troverai u
 - 🩸 **Esfiltrazione Dati**: Estrazione mirata di informazioni sensibili (email, password) di tutti gli utenti, una volta scoperta la struttura (Violazione della *Confidentiality*).
 - ✏️ **Piggybacked Queries (Modifica di Massa)**: Alterazione non autorizzata e massiva di tutti i voti all'interno del database senza conoscere gli ID specifici degli studenti (Violazione dell'*Integrity*).
 - 🗑️ **Piggybacked Queries (Cancellazione di Massa)**: Rimozione malevola dell'intero contenuto della tabella dei voti per causare un disservizio permanente (Violazione dell'*Availability*).
-- ⏱️ **Blind SQL Injection (Time-Based)**: Dimostrazione di come un attaccante possa confermare la vulnerabilità e *estrarre dati carattere per carattere* usando `SLEEP()`, anche quando l'applicazione non mostra errori né output.
-- 💥 **Error-Based SQL Injection**: Utilizzo di `EXTRACTVALUE()` per forzare il database a rivelare informazioni sensibili direttamente nei messaggi di errore.
 
 ### 🤖 Tool di Automazione (Python)
 È disponibile uno script Python per automatizzare gli attacchi:
 
 | Script | Descrizione |
 |--------|-------------|
-| [`demo_browser.py`](./exploits/demo_browser.py) | **Demo visuale**: apre un browser reale e mostra ogni attacco passo-passo |
+| [`demo_browser.py`](./exploits/demo_browser.py) | **Demo visuale**: apre un browser reale e mostra l'intera kill-chain in 15 fasi |
 
 Per eseguire la demo visuale nel browser (consigliata per la presentazione):
 ```bash
-pip install selenium requests
+pip install selenium
 python exploits/demo_browser.py
 ```
-Lo script aprirà Chrome, eseguirà ogni fase dell'attacco con un effetto "typing" in tempo reale, e infine verificherà che l'app sicura blocchi correttamente i payload.
+Lo script aprirà Chrome e offrirà un menu interattivo. Eseguirà gli attacchi sull'app vulnerabile e poi verificherà che l'app sicura blocchi correttamente i payload (testando sia un account utente standard "Alunno" che uno privilegiato "Admin"). È disponibile anche una modalità di esecuzione completamente automatica (Opzione 15).
 
 ---
 
@@ -90,19 +88,10 @@ Se un pattern viene rilevato, il tentativo viene registrato nel file `audit.log`
 - Costruire un archivio storico degli incidenti per analisi forensi
 - Attivare eventuali contromisure automatiche (es. ban dell'IP)
 
-Per consultare il log dall'interno del container:
-```bash
-docker exec progetto_sqlinjection-app-sicura-1 cat /var/www/html/audit.log
-```
+Grazie ai volumi Docker configurati nel `docker-compose.yaml`, il file `audit.log` viene generato e condiviso in tempo reale con la macchina host. 
+Lo troverai comodamente generato nella **cartella principale** del progetto (accanto al file `docker-compose.yaml`), e potrai ispezionarlo e mostrarlo aprendolo con qualsiasi editor di testo durante la presentazione.
 
-### 4. 🌐 Livello Rete (WAF - Web Application Firewall) — Approfondimento Teorico
-In un ambiente di produzione reale, un ulteriore livello di difesa è rappresentato dal **WAF (Web Application Firewall)**, come ad esempio *ModSecurity* con il set di regole OWASP CRS (Core Rule Set).
-Il WAF si posiziona tra il client e il web server e ispeziona ogni richiesta HTTP **prima** che raggiunga l'applicazione PHP:
-- Blocca richieste contenenti pattern noti di SQL Injection (`UNION`, `SELECT`, `DROP`, ecc.)
-- Protegge anche da attacchi XSS, path traversal e altri vettori OWASP Top 10
-- Può essere deployato come container Docker aggiuntivo (reverse proxy Apache/Nginx + ModSecurity)
 
-> **Nota:** Il WAF non è stato implementato in questo laboratorio per mantenere l'infrastruttura leggera e focalizzata sull'analisi del codice, ma rappresenterebbe il quarto livello di difesa in un'architettura di sicurezza completa.
 
 ---
 
@@ -118,6 +107,7 @@ Il WAF si posiziona tra il client e il web server e ispeziona ogni richiesta HTT
 │   ├── payloads.md          # ⚔️ Payload e istruzioni per gli attacchi manuali
 │   └── demo_browser.py      # 🌐 Demo visuale con Selenium (apre il browser)
 ├── docker-compose.yaml      # 🐳 Configurazione dei servizi Docker
+├── audit.log                # 📝 (Generato) Log dei tentativi di attacco bloccati
 └── README.md                # 📖 Questo file
 ```
 
