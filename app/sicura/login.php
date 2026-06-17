@@ -39,18 +39,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Invece di concatenare le stringhe utente direttamente nella query (come nell'app vulnerabile: $sql = "... WHERE username = '$username'"),
     // utilizziamo dei "placeholder" (es. :username). Questo impedisce l'attacco di Tautologia (es. ' OR 1=1 --), 
     // perché il database tratterà l'input rigorosamente come stringa di testo e non come codice eseguibile SQL.
-    $sql = "SELECT * FROM users WHERE username = :username AND password = :password";
+    // In questa versione sicura estraiamo l'hash della password corrispondente all'utente
+    $sql = "SELECT * FROM users WHERE username = :username";
     
     try {
         $stmt = $db_connection->prepare($sql);
-        // "Leghiamo" le variabili ai placeholder in modo sicuro
+        // "Leghiamo" la variabile al placeholder in modo sicuro
         $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':password', $password);
         $stmt->execute();
         
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user) {
+        // Verifichiamo se l'utente esiste e se la password inserita corrisponde all'hash nel database
+        if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['logged_in'] = true;
             header("Location: index.php");

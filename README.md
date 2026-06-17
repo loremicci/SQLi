@@ -57,11 +57,10 @@ All'interno del file [`exploits/payloads.md`](./exploits/payloads.md) troverai u
 - 💥 **Error-Based SQL Injection**: Utilizzo di `EXTRACTVALUE()` per forzare il database a rivelare informazioni sensibili direttamente nei messaggi di errore.
 
 ### 🤖 Tool di Automazione (Python)
-Sono disponibili due script Python per automatizzare gli attacchi:
+È disponibile uno script Python per automatizzare gli attacchi:
 
 | Script | Descrizione |
 |--------|-------------|
-| [`automate_sqli.py`](./exploits/automate_sqli.py) | Kill-chain via terminale con menu interattivo e output tabellare |
 | [`demo_browser.py`](./exploits/demo_browser.py) | **Demo visuale**: apre un browser reale e mostra ogni attacco passo-passo |
 
 Per eseguire la demo visuale nel browser (consigliata per la presentazione):
@@ -117,7 +116,6 @@ Il WAF si posiziona tra il client e il web server e ispeziona ogni richiesta HTT
 │   └── 02_secure_user.sql   # 🔒 Inizializzazione DB app sicura (privilegi minimi)
 ├── exploits/
 │   ├── payloads.md          # ⚔️ Payload e istruzioni per gli attacchi manuali
-│   ├── automate_sqli.py     # 🤖 Script Python per l'automazione via terminale
 │   └── demo_browser.py      # 🌐 Demo visuale con Selenium (apre il browser)
 ├── docker-compose.yaml      # 🐳 Configurazione dei servizi Docker
 └── README.md                # 📖 Questo file

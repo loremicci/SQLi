@@ -23,12 +23,12 @@ CREATE TABLE grades (
 
 -- Inserimento degli stessi dati iniziali
 INSERT INTO users (username, password, email, telefono, permissions) VALUES
-('admin_supremo', 'Sup3rS3cr3t!', 'admin@scuola.it', '333-0000000', 2),
-('prof_rossi', 'rossi123', 'mario.rossi@scuola.it', '333-1234567', 1),
-('prof_bianchi', 'bianchi_math', 'luigi.bianchi@scuola.it', '333-7654321', 1),
-('alunno_verdi', 'verdi2026', 'giuseppe.verdi@studenti.it', '333-1112223', 0),
-('alunno_neri', 'password_debole', 'paolo.neri@studenti.it', '333-4445556', 0),
-('alunno_gialli', 'qwerty', 'marco.gialli@studenti.it', '333-7778889', 0);
+('admin_supremo', '$2y$10$R.9M3nC8v72UImMT9m8tROPBloa6ARyq9dWh.pUg0lv/aSNkZqnOa', 'admin@scuola.it', '333-0000000', 2),
+('prof_rossi', '$2y$10$ZRk8xnoUizD1Ftp9f2kTC.HeQYf5gaRZfhxde04Dnz5pg7DTNPwiK', 'mario.rossi@scuola.it', '333-1234567', 1),
+('prof_bianchi', '$2y$10$OT60I8OrdWU55TjivMldY.kEWh623ksZ7UU0yipS2d8NRGVxoqt/W', 'luigi.bianchi@scuola.it', '333-7654321', 1),
+('alunno_verdi', '$2y$10$7/q6HDKDiVPA6vOEG8V6M.ZxA6HxHtnX/7VjZ5ZEik21sUSIjkyWK', 'giuseppe.verdi@studenti.it', '333-1112223', 0),
+('alunno_neri', '$2y$10$qMEjd/mOuWIYUODqonyckeTvJE68rJO1zBN4ONhOE49/QHsf7bGzW', 'paolo.neri@studenti.it', '333-4445556', 0),
+('alunno_gialli', '$2y$10$p9bDqxVA7efmp3tRWHEEN.iP4HbcXxUcFmYs2mjKcC9CHo0HqULNu', 'marco.gialli@studenti.it', '333-7778889', 0);
 
 INSERT INTO grades (student_id, grade, subject, date) VALUES
 (4, 7, 'Matematica', '2026-03-25'),
