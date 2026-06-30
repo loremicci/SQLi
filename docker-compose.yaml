@@ -33,6 +33,7 @@ services:
     build: ./app/sicura
     ports:
       - "8081:80"
+      - "8443:443"
     depends_on:
       db:
         condition: service_healthy
