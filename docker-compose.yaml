@@ -33,7 +33,7 @@ services:
     build: ./app/sicura
     command: /bin/sh -c "chmod 666 /var/www/html/audit.log && apache2-foreground"
     ports:
-      - "8081:80"
+      - "8082:80"
       - "8443:443"
     depends_on:
       db:
