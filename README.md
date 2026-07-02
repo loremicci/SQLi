@@ -64,11 +64,21 @@ All'interno del file [`exploits/payloads.md`](./exploits/payloads.md) troverai u
 | [`demo_browser.py`](./exploits/demo_browser.py) | **Demo visuale**: apre un browser reale e mostra l'intera kill-chain in 15 fasi |
 
 Per eseguire la demo visuale nel browser (consigliata per la presentazione):
+
+**Windows / macOS:**
 ```bash
 pip install selenium
 python exploits/demo_browser.py
 ```
-Lo script aprirà Chrome e offrirà un menu interattivo. Eseguirà gli attacchi sull'app vulnerabile (HTTP) e poi verificherà che l'app sicura blocchi correttamente i payload collegandosi tramite HTTPS (testando sia un account utente standard "Alunno" che uno privilegiato "Admin"). È disponibile anche una modalità di esecuzione completamente automatica (Opzione 15).
+
+**Ubuntu / Linux Mint / Debian:**
+```bash
+sudo apt install python3-pip python3-selenium
+python3 exploits/demo_browser.py
+```
+> Il pacchetto `python3-selenium` di apt installa automaticamente anche il driver del browser (chromium-chromedriver), senza bisogno di configurazioni aggiuntive.
+
+Lo script aprirà Chrome/Chromium e offrirà un menu interattivo. Eseguirà gli attacchi sull'app vulnerabile (HTTP) e poi verificherà che l'app sicura blocchi correttamente i payload collegandosi tramite HTTPS (testando sia un account utente standard "Alunno" che uno privilegiato "Admin"). È disponibile anche una modalità di esecuzione completamente automatica (Opzione 15).
 
 ---
 

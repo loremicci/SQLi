@@ -61,3 +61,4 @@
 [2026-07-01 23:16:16] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; DELETE FROM grades; -- 
 [2026-07-01 23:18:50] ⚠️  TENTATIVO SQLi RILEVATO | IP: 172.18.0.1 | Username: ' OR 1=1 --  | Password: hacked
 [2026-07-01 23:37:51] ⚠️  TENTATIVO SQLi RILEVATO (ricerca) | IP: 172.18.0.1 | Search: '; DELETE FROM grades; -- 
+[2026-07-02 00:05:58] ⚠️  TENTATIVO SQLi RILEVATO | IP: 172.18.0.1 | Username: ' OR 1=1 --  | Password: hacked
