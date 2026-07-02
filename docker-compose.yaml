@@ -2,7 +2,7 @@ services:
   db:
     image: mariadb:10.5
     ports:
-      - "3306:3306"
+      - "33060:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: sql_injection_db
