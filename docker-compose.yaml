@@ -1,8 +1,6 @@
 services:
   db:
     image: mariadb:10.5
-    ports:
-      - "33060:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: sql_injection_db
@@ -22,7 +20,7 @@ services:
   app-vulnerabile:
     build: ./app/vulnerabile
     ports:
-      - "8083:80"
+      - "42080:80"
     depends_on:
       db:
         condition: service_healthy
@@ -33,8 +31,8 @@ services:
     build: ./app/sicura
     command: /bin/sh -c "chmod 666 /var/www/html/audit.log && apache2-foreground"
     ports:
-      - "8082:80"
-      - "8443:443"
+      - "42081:80"
+      - "42443:443"
     depends_on:
       db:
         condition: service_healthy
