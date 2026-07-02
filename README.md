@@ -27,8 +27,8 @@ Inoltre, il progetto propone e implementa misure di difesa efficaci sia a livell
 
 L'infrastruttura è completamente dockerizzata ed emula tre componenti fondamentali:
 1. 🗄️ **Database Server** (MariaDB 10.5)
-2. 🔴 **Web App Vulnerabile** — HTTP su porta `8080`
-3. 🔵 **Web App Sicura** — HTTPS su porta `8443` (certificato self-signed TLS)
+2. 🔴 **Web App Vulnerabile** — HTTP su porta `42080`
+3. 🔵 **Web App Sicura** — HTTPS su porta `42443` (certificato self-signed TLS)
 
 ### 🛠️ Come Avviare l'Ambiente
 Assicurati di avere Docker e Docker Compose installati, quindi lancia nel terminale:
@@ -36,8 +36,8 @@ Assicurati di avere Docker e Docker Compose installati, quindi lancia nel termin
 docker compose up --build -d
 ```
 I servizi saranno subito pronti all'uso:
-- 🔴 App Vulnerabile: [http://localhost:8080](http://localhost:8080)
-- 🔵 App Sicura: [https://localhost:8443](https://localhost:8443)
+- 🔴 App Vulnerabile: [http://localhost:42080](http://localhost:42080)
+- 🔵 App Sicura: [https://localhost:42443](https://localhost:42443)
 
 > **Nota:** L'app sicura utilizza un certificato self-signed. Al primo accesso il browser mostrerà un avviso di sicurezza: è sufficiente accettare l'eccezione per procedere. Il traffico sarà comunque cifrato con TLS.
 
