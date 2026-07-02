@@ -106,7 +106,7 @@ Grazie ai volumi Docker configurati nel `docker-compose.yaml`, il file `audit.lo
 Lo troverai comodamente generato nella **cartella principale** del progetto (accanto al file `docker-compose.yaml`), e potrai ispezionarlo e mostrarlo aprendolo con qualsiasi editor di testo durante la presentazione.
 
 ### 4. 🔐 Livello Trasporto (HTTPS/TLS)
-L'app sicura è servita esclusivamente tramite **HTTPS** (porta `443`, mappata su `8443` nell'host), utilizzando un certificato self-signed generato automaticamente durante la build dell'immagine Docker. Questo garantisce che:
+L'app sicura è servita esclusivamente tramite **HTTPS** (porta `443`, mappata su `42443` nell'host), utilizzando un certificato self-signed generato automaticamente durante la build dell'immagine Docker. Questo garantisce che:
 - Le credenziali di login (username e password) transitino **cifrate** sulla rete
 - Il traffico sia protetto da attacchi di tipo **Man-in-the-Middle** (MitM) e **sniffing**
 - Lo stack difensivo copra anche il livello di trasporto, non solo quello applicativo e database
