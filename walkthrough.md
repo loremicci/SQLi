@@ -3,9 +3,9 @@
 Tutti i servizi sono stati configurati e avviati correttamente tramite Docker.
 
 ## Servizi Avviati
-*   **Database (MariaDB 10.5)**: Porta `3306`
-*   **Web App Vulnerabile (Tema Rosso)**: [http://localhost:8080](http://localhost:8080)
-*   **Web App Sicura (Tema Blu)**: [http://localhost:8081](http://localhost:8081)
+*   **Database (MariaDB 10.5)**: (Porta esposta rimossa per evitare conflitti, accessibile internamente)
+*   **Web App Vulnerabile (Tema Rosso)**: [http://localhost:42080](http://localhost:42080)
+*   **Web App Sicura (Tema Blu)**: [https://localhost:42443](https://localhost:42443) (HTTPS)
 
 ---
 
@@ -15,7 +15,8 @@ Abbiamo preparato uno script Python che utilizza **Selenium** per automatizzare 
 
 **Prerequisiti:**
 1. Assicurati che i container siano attivi (`docker compose up --build -d`).
-2. Installa la dipendenza necessaria con `pip install selenium`.
+2. **Windows / macOS:** Installa la dipendenza con `pip install selenium`.
+   **Linux (Ubuntu/Mint):** Installa la dipendenza con `sudo apt install python3-pip python3-selenium`.
 
 Puoi eseguire la demo con:
 ```bash
