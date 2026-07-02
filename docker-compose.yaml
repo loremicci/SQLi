@@ -22,7 +22,7 @@ services:
   app-vulnerabile:
     build: ./app/vulnerabile
     ports:
-      - "8080:80"
+      - "8083:80"
     depends_on:
       db:
         condition: service_healthy
